@@ -34,6 +34,7 @@
 		}
 		input.search-input:focus,input.search-input:hover{
 			border:1px solid #4241E2;
+			1px solid #908D8D
 		}
 		.search-result{
 			width:380px;
@@ -63,7 +64,7 @@
 		.search-result .list li{
 			float:left;
 			padding:0px 10px 10px 0px;
-
+			cursor:pointer;
 		}
 	</style>
 </head>
@@ -100,6 +101,10 @@
 	<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
+			$("#fuzzy-search .search-result li").live("click",function(){
+				var this_val=$(this).text();
+				$('#fuzzy-search input').val(this_val);
+			})
 			$('#fuzzy-search input').bind('input propertychange', function() {  
 	        	search();
 			});
