@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>模糊搜索</title>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+		}
+		input{
+			border:0;
+			outline:none;
+		}
+		ul,li{ 
+			list-style: none;
+			list-style-type:none;
+		}
+		.fuzzy-search{
+			position:relative;
+			width:500px;
+			height:500px;
+			margin:20px auto;
+		}
+		input.search-input{
+			width:380px;
+			height:30px;
+			border:1px solid #BFBDBD;
+			padding:0px 10px;
+			position: absolute;
+			top:0;
+			left:0;
+			margin:auto;
+		}
+		input.search-input:focus,input.search-input:hover{
+			border:1px solid #4241E2;
+		}
+		.search-result{
+			width:380px;
+			padding:10px;
+			position: absolute;
+			border:1px solid #BFBDBD;
+			border-top:0;
+			top:30px;
+			display: none;
+		}
+		.search-result .list:after{
+			display:block;
+		  	clear:both;
+		  	content:"";
+		  	visibility:hidden;
+		  	height:0;
+		  	font-size:0; 
+			line-height:0;
+		}
+		.search-result .list .title{
+			margin-top:10px;
+			font-weight: bold;
+		}
+		.search-result .list ul{
+			margin-top:10px;
+		}
+		.search-result .list li{
+			float:left;
+			padding:0px 10px 10px 0px;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="fuzzy-search" id="fuzzy-search">
+		<input type="text" name="" placeholder="请输入关键词" class="search-input"/>
+		<div class="search-result">
+			<!-- <p>搜索无结果</p> -->
+			<!-- <div class="list">
+				<p class="title">安徽</p>
+				<ul>
+					<li>合肥</li>
+					<li>安庆</li>
+					<li>芜湖芜湖</li>
+					<li>亳州</li>
+					<li>亳州</li>
+					<li>亳州亳州</li>
+					<li>亳州</li>
+					<li>亳州亳州</li>
+					<li>亳州</li>
+				</ul>
+			</div>
+			<div class="list">
+				<p class="title">安徽</p>
+				<ul>
+					<li>合肥</li>
+					<li>安庆</li>
+					<li>芜湖</li>
+					<li>亳州</li>
+				</ul>
+			</div> -->
+		</div>
+	</div>
+	<script type="text/javascript" src="jquery-1.7.2.min.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			$('#fuzzy-search input').bind('input propertychange', function() {  
+	        	search();
+			});
+			document.onkeydown = function(e){
+		        if((e.keyCode || e.which) == 13){
+		        	search();
+		        }
+		    }
+		    function search(){
+		    	var keywords=$("#fuzzy-search input").val();
+		    	if(keywords!=""){
+		    		$("#fuzzy-search .search-result").slideDown();
+		    	}
+		    	var data=getList(keywords);
+		    	var length=data.length;
+		    	var html="";
+		    	if(length>0){
+		    		for(var i=0;i<length;i++){
+			    		html+='<div class="list">';
+						html+='	<p class="title">'+data[i].title+'</p>';
+						html+='	<ul>';
+						var list=data[i].ports;
+						for(var j=0;j<list.length;j++){
+							html+='		<li>'+list[j].name+'</li>';
+						}
+						html+='	</ul>';
+						html+='</div>';
+			    	}
+		    	}else{
+		    		html="<p>搜索无结果</p>";
+		    	}
+		    	$("#fuzzy-search .search-result").html(html);
+		    	if(keywords!=""){
+		    		$("#fuzzy-search .search-result").slideDown();
+		    	}else{
+		    		$("#fuzzy-search .search-result").slideUp();
+		    	}
+		    }
+		    // ajax获取数据函数
+		    function getList(keywords){
+		    	var data=[
+		    		{
+		    			"title":"安徽",
+		    			"ports":[
+		    				{
+		    					"name":"合肥"
+		    				},
+		    				{
+		    					"name":"芜湖"
+		    				},
+		    				{
+		    					"name":"安庆"
+		    				},
+		    				{
+		    					"name":"亳州"
+		    				}
+		    			]
+		    		},
+		    		{
+		    			"title":"浙江",
+		    			"ports":[
+		    				{
+		    					"name":"杭州"
+		    				},
+		    				{
+		    					"name":"杭州"
+		    				},
+		    				{
+		    					"name":"杭州"
+		    				},
+		    				{
+		    					"name":"杭州"
+		    				}
+		    			]
+		    		}
+		    	];
+		    	return data;
+		    }
+		})
+	</script>
+</body>
+</html>
